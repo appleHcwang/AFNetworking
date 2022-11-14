@@ -184,10 +184,10 @@
 #pragma mark - Purging
 - (void)testThatImagesArePurgedWhenCapcityIsReached {
     UInt64 imageSize = 1020000;
-    UInt64 numberOfImages = 10;
-    UInt64 numberOfImagesAfterPurge = 6;
+    NSInteger numberOfImages = 10;
+    NSInteger numberOfImagesAfterPurge = 6;
     self.cache = [[AFAutoPurgingImageCache alloc] initWithMemoryCapacity:numberOfImages * imageSize preferredMemoryCapacity:numberOfImagesAfterPurge * imageSize];
-    NSUInteger index = 1;
+    NSInteger index = 1;
     while (YES) {
         NSString * identifier = [NSString stringWithFormat:@"image-%ld",(long)index];
         [self.cache addImage:self.testImage withIdentifier:identifier];
@@ -203,15 +203,15 @@
 
 - (void)testThatPrioritizedImagesWithOldestLastAccessDatesAreRemovedDuringPurge {
     UInt64 imageSize = 1020000;
-    UInt64 numberOfImages = 10;
-    UInt64 numberOfImagesAfterPurge = 6;
+    NSInteger numberOfImages = 10;
+    NSInteger numberOfImagesAfterPurge = 6;
     self.cache = [[AFAutoPurgingImageCache alloc] initWithMemoryCapacity:numberOfImages * imageSize preferredMemoryCapacity:numberOfImagesAfterPurge * imageSize];
-    for (NSUInteger index = 0; index < numberOfImages; index ++) {
+    for (NSInteger index = 0; index < numberOfImages; index ++) {
         NSString * identifier = [NSString stringWithFormat:@"image-%ld",(long)index];
         [self.cache addImage:self.testImage withIdentifier:identifier];
     }
 
-    NSString *firstIdentifier = [NSString stringWithFormat:@"image-%ld",(long)0];
+    NSString * firstIdentifier = [NSString stringWithFormat:@"image-%ld",(long)0];
     UIImage *firstImage = [self.cache imageWithIdentifier:firstIdentifier];
     XCTAssertNotNil(firstImage, @"first image should not be nil");
     UInt64 prePurgeMemoryUsage = self.cache.memoryUsage;
@@ -219,7 +219,7 @@
     UInt64 postPurgeMemoryUsage = self.cache.memoryUsage;
     XCTAssertTrue(postPurgeMemoryUsage < prePurgeMemoryUsage);
 
-    for (NSUInteger index = 0; index <= numberOfImages; index++) {
+    for (NSInteger index = 0; index <= numberOfImages ; index++) {
         NSString * identifier = [NSString stringWithFormat:@"image-%ld",(long)index];
         UIImage *cachedImage = [self.cache imageWithIdentifier:identifier];
         if (index == 0 || index >= 6) {
@@ -230,12 +230,4 @@
     }
 }
 
-#pragma mark - Should Cache Image
-- (void)testThatShouldCacheIsYes {
-    NSURL *url = [NSURL URLWithString:@"http://test.com/image"];
-    NSString *identifier = @"filter";
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    BOOL result = [self.cache shouldCacheImage:self.testImage forRequest:request withAdditionalIdentifier:identifier];
-    XCTAssertTrue(result);
-}
 @end

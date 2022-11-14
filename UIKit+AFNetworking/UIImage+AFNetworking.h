@@ -1,6 +1,8 @@
-// AppDelegate.h
 //
-// Copyright (c) 2011–2016 Alamofire Software Foundation ( http://alamofire.org/ )
+//  UIImage+AFNetworking.h
+//  
+//
+//  Created by Paulo Ferreira on 08/07/15.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +22,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Cocoa/Cocoa.h>
+#if TARGET_OS_IOS || TARGET_OS_TV
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+#import <UIKit/UIKit.h>
 
-@property (strong) IBOutlet NSWindow *window;
-@property (strong) IBOutlet NSTableView *tableView;
-@property (strong) IBOutlet NSArrayController *postsArrayController;
+@interface UIImage (AFNetworking)
+
++ (UIImage*) safeImageWithData:(NSData*)data;
 
 @end
+
+#endif
