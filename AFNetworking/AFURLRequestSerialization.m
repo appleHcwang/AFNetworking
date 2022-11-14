@@ -1257,7 +1257,15 @@ typedef enum {
             [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         }
 
-        [mutableRequest setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
+#pragma mark -- 解决加密成字符串兼容问题 ----
+        /**
+         * 添加字符串判断逻辑
+         */
+        if ([parameters isKindOfClass:[NSString class]]) {
+            [mutableRequest setHTTPBody:[parameters dataUsingEncoding:NSUTF8StringEncoding]];
+        } else {
+            [mutableRequest setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
+        }
     }
 
     return mutableRequest;
